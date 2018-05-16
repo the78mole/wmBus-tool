@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <dlfcn.h>
 #include <pthread.h>
-#include <energycam/ecpiww.h>
+//#include <energycam/ecpiww.h>
 #include <energycam/wmbus.h>
 #include <energycam/wmbusext.h>
 
