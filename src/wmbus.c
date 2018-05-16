@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -11,9 +14,9 @@
 #include <dirent.h>
 #include <dlfcn.h>
 #include <pthread.h>
-//#include <energycam/ecpiww.h>
-#include <energycam/wmbus.h>
-#include <energycam/wmbusext.h>
+//#include "ecpiww.h"
+#include "wmbus.h"
+#include "wmbusext.h"
 
 unsigned long   dwFrameCounter;
 unsigned long   dwMeter=0;
@@ -313,7 +316,7 @@ bool AMBER_ReadFrameFromStick(int serial, uint8_t *pbuffer, int sSize, short* sS
         }
 
         if(infoflag>=SHOWALLDETAILS) {
-            printf("Buffer(%02X %02X %02X ):",iFrameLength,bytes_read,bSuccess);
+            printf("Buffer(%d %ld %02X ):",iFrameLength,bytes_read,bSuccess);
             for(i=0; i<iFrameLength; i++)
                 printf("%02X ", pbuffer[i]);         //show bytes recieved
             printf("\n");

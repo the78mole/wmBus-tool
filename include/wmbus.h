@@ -7,6 +7,9 @@
 #define SLEEP100MS      (100*1000)
 #define BUFFER_SIZE     1024
 
+#define SILENTMODE     0
+#define SHOWDETAILS    1
+#define SHOWALLDETAILS 2
 
 //offset in wM-Bus data
 #define OFFSETPAYLOAD        3
@@ -178,5 +181,16 @@ uint8_t CMD_SET_AES_KEY_REQ_Arr[]           ={0xFF, 0x50, 0x18, 0x00, 0x00, 0x00
 #define RADIOLINK_MSG_WMBUSMSG_IND          0x03
 #define RADIOLINK_MSG_DATA_REQ              0x04
 #define RADIOLINK_MSG_DATA_RSP              0x05
+
+// Dome platform independent helpers
+#ifndef max
+  #define max(x,y) ((x>y) ? x:y)
+  #define min(x,y) ((x>y) ? y:x)
+#endif
+
+#ifndef TRUE
+    #define TRUE  (1==1)
+    #define FALSE (1==2)
+#endif
 
 #endif

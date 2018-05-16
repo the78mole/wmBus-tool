@@ -1,8 +1,6 @@
 wmBus-tool
 ==========
 
-WORK IN PROGRESS: Clean-up repo
-
 This repo is a fork of the ffcrg/ecpiww repo and widens the usage of the wmBus library.
 
 
@@ -20,6 +18,14 @@ Hardware:
 Features:
  - The application shows you all received wireless M-Bus packages. 
  - coming soon
+
+
+# TODO
+
+ - Use autotools
+ - Generate a shared library
+ - Add MQTT-Client
+ - Add REST-Client
 
 # Building the software
 
