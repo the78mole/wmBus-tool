@@ -8,7 +8,6 @@ This repo is a fork of the ffcrg/ecpiww repo and widens the usage of the wmBus l
 
 [![GitHub issues](https://img.shields.io/github/issues/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool/issues)
 [![GitHub license](https://img.shields.io/github/license/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool)
-![Github All Releases(https://img.shields.io/github/downloads/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool)
 
 
 Hardware:
