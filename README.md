@@ -1,38 +1,29 @@
-ecpiww
-======
+wmBus-tool
+==========
 
-A wireless EnergyCam setup with a Raspberry Pi to monitor the energy usage
+WORK IN PROGRESS: Clean-up repo
 
-FAST EnergyCam: The quick and inexpensive way to turn your conventional meter into a smart metering device 
-(http://www.fastforward.ag/eng/index_eng.html)
+This repo is a fork of the ffcrg/ecpiww repo and widens the usage of the wmBus library.
+
+
+[![GitHub issues](https://img.shields.io/github/issues/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool/issues)
+[![GitHub license](https://img.shields.io/github/license/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool)
+![Github All Releases(https://img.shields.io/github/downloads/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool)
 
 
 Hardware:
-  - Raspberry Pi
-  - FAST EnergyCam RF and FAST USB Communication Interface to configure the Energycam prior to installation
-	(available at http://umwelt-messtechnik.de/index.php?cat=c91_Smart-Grid-Komponenten-Smart-Grid-Komponenten.html)
+  - Any linux
+  - at least one wM-Bus device
   - wireless M-Bus USB Stick (2 manufacturers are supported)
   	- IMST IM871A-USB Stick ( available at http://www.tekmodul.de/index.php?id=shop-wireless_m-bus_oms_module or http://webshop.imst.de/funkmodule/im871a-usb-wireless-mbus-usb-adapter-868-mhz.html)
   	- AMBER Wireless M-Bus USB Adapter (http://amber-wireless.de/406-1-AMB8465-M.html)
-  	
-  - EDIMAX EW-7811UN Wireless USB Adapter
-
-
-Software:
-  - dygraph (https://github.com/danvk/dygraphs) 
 
 Features:
  - The application shows you all received wireless M-Bus packages. 
- - You can add meters that are watched. The received values of these are written into csv files and presented on the webserver.
- - The energy usage is shown as an interactive, zoomable chart of time on a website.
- - install.txt describes how to configure the raspberry and compile the sources
+ - coming soon
 
+# Building the software
 
-Trademarks
+The build is easily done by issuing
 
-Raspberry Pi and the Raspberry Pi logo are registered trademarks of the Raspberry Pi Foundation (http://www.raspberrypi.org/)
-
- 
-
-
-
+    make
