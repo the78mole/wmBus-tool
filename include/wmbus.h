@@ -1,15 +1,32 @@
 #ifndef WMBUS_H
 #define WMBUS_H
 
+#include "config.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "wmbusext.h"
+
 #define MAXSLOT          16
 #define COMMANDTIMEOUT  100
 #define THREADWAITING   100
 #define SLEEP100MS      (100*1000)
 #define BUFFER_SIZE     1024
 
-#define SILENTMODE     0
-#define SHOWDETAILS    1
-#define SHOWALLDETAILS 2
+#define ALLOW_AES_TABLE_READ    1
+#define AES_TABLE_SIZE        256
+
+typedef struct _AES_TABLE {
+  uint32_t ident;
+  uint8_t key[AES_KEYLENGHT_IN_BYTES];
+} aes_table_t;
+
+aes_table_t aes_table[AES_TABLE_SIZE];
+
+
 
 //offset in wM-Bus data
 #define OFFSETPAYLOAD        3

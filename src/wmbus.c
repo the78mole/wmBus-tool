@@ -36,12 +36,20 @@ static ecMBUSData MeterData[MAXSLOT];
 
 void GetDataFromStick(unsigned long handle,uint16_t stick,uint16_t infoflag);
 //////////////////////////////////////////////////////////////////////////////////////
-
+int debugLevel = SILENTMODE;
 
 pthread_t   ThreadID;
 pthread_mutex_t lockAPI= PTHREAD_MUTEX_INITIALIZER;
 int StickCom=-1;
 
+/**
+ * @brief Set the Debug Level of the wMBus module
+ * 
+ * @param level 
+ */
+void setDebugLevel(int level) {
+    debugLevel = level;
+}
 
 //connect  Stick
 int Stick_OpenDevice(char * comport, uint32_t BaudRate) {
@@ -688,6 +696,8 @@ unsigned long  wMBus_InitDevice(int handle, uint16_t stick, uint16_t infoflag) {
     //clear Array
     memset(MeterAddr, 0, MAXSLOT*sizeof(ecwMBUSMeter));
     memset(MeterData, 0, MAXSLOT*sizeof(ecMBUSData));
+    memset(aes_table, 0, sizeof(aes_table_t)*AES_TABLE_SIZE);
+
 
     if(stick == iM871AIdentifier) {
      //Enable RSSI and Timestamp
@@ -1055,3 +1065,112 @@ unsigned long wMBus_GetData4Meter(int Index, psecMBUSData data) {
 #ifdef WIN32
 #pragma endregion
 #endif
+
+bool wMBus_AddAESKey(int handle, uint16_t stick, uint8_t slot, uint8_t *key) {
+
+    if(IsAmberStick(stick)) {
+        // Here it seems, we need to implement transparent en-/decryption,
+        // because the key is not supporting AES decryption
+        printf("NOT SUPPORTED YET!");
+    } else { 
+        // IMST-Stick supports AES encryption, but only a limited amount of slots
+        unsigned char Filter[sizeof(CMD_SET_AES_KEY_REQ_Arr)];
+        memset(Filter,0,sizeof(CMD_SET_AES_KEY_REQ_Arr));
+        IMST_WriteAESKey(handle, slot, &Filter[3], (uint8_t*) key);
+
+    }
+    return false;
+}
+
+/**
+ * @brief Function to add decryption keys for sepcific wMBus meters
+ * 
+ * @param ident The identifier of the wMBus meter
+ * @param key A pointer to the AES128 key for decription as uint8_t[16] bytes.
+ * @return true Retruns true if operation succeds
+ * @return false Returns false if operation fails
+ */
+bool wMBus_WriteAESKey(uint32_t ident, uint8_t *key) {
+    int found = -1, firstEmpty = -1;
+    for(int i = 0; i<AES_TABLE_SIZE; i++) {
+        if (aes_table[i].ident == ident) {
+            found = i;
+        } else if (aes_table[i].ident == 0 && firstEmpty > -1) {
+            firstEmpty = i;
+        }
+        if (firstEmpty > -1 && found > -1) break;
+    }
+
+    if (found > -1) {
+        if (debugLevel > 0) printf("Updating key of 0x%x (%d) in slot %d", ident, ident, found);
+        memcpy(aes_table[found].key, key, AES_KEYLENGHT_IN_BYTES);
+        return true;
+    } else if(found == -1 && firstEmpty > -1) {
+        if (debugLevel > 0) 
+            printf("Setting new key for 0x%x (%d) in slot %d.\n", ident, ident, firstEmpty);
+        aes_table[firstEmpty].ident = ident;
+        memcpy(aes_table[firstEmpty].key, key, AES_KEYLENGHT_IN_BYTES);
+        return true;
+    } else {
+        printf("Error occured adding key for 0x%x (%d) [found: %d, firstEmpty: %d].", 
+            ident, ident, found, firstEmpty);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Checks if a key is stored for a given wMBus meter and (optional) 
+ *      if key matches a given key (only if ALLOW_AES_TABLE_READ is defined). 
+ *      If a pointer to some int is provided, the first empty slot is returned.
+ * 
+ * @param ident 
+ * @param key_opt 
+ * @param firstEmpty_opt 
+ * @return int 
+ */
+int wMBus_CheckAESKeyExists(uint32_t ident, int* firstEmpty, uint8_t *key_opt) {
+    if (firstEmpty) *firstEmpty = -1;
+
+    int found = -1, fempty = -1;
+    for(int i = 0; i<AES_TABLE_SIZE; i++) {
+        if (aes_table[i].ident == ident) {
+            if (!key_opt) {
+                found = i;
+            } else {
+                if(memcmp(key_opt, aes_table[i].key, AES_KEYLENGHT_IN_BYTES) == 0) {
+                    found = i;
+                } else {
+                    found = -2;
+                }
+            }
+        }
+        if (found > -1 && fempty > -1) {
+            if (firstEmpty) *firstEmpty = fempty;
+            return found;
+        }
+    }
+    return -1;
+}
+
+/**
+ * @brief Reading an AES key from table, if allowed by compile time setting
+ * 
+ * @param ident Identification of wMBus meter
+ * @param key AES128 key as uint8_t[16]. This needs to be a variable of appropriate size.
+ * @return true If allowed to read and found
+ * @return false If not allowed or no key for meter ID found.
+ */
+bool wMBus_ReadAESKey(uint32_t ident, uint8_t *key) {
+#ifdef ALLOW_AES_TABLE_READ
+    for(int i = 0; i<AES_TABLE_SIZE; i++) {
+        if (aes_table[i].ident == ident) {
+            memcpy(key, aes_table[i].key, AES_KEYLENGHT_IN_BYTES);
+            return true;
+        }
+    }    
+    return false;
+#else
+    return false;
+#endif
+}

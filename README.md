@@ -22,13 +22,25 @@ Features:
 
 # TODO
 
- - Use autotools
- - Generate a shared library
+ - Enhance autotools
+   - Generate a shared library
+   - Make use of ./configure for compile time options
+     - AES key readout
+ - Implement tests
+ - Use semaphore to sync threads instead of timed polling
  - Add MQTT-Client
  - Add REST-Client
+ - Seperate wMBus generic from HW dependent 
+   - extract IMST
+   - throw out AMBER
+   - Make stubs for AMBER (find somebody to test it)
 
 # Building the software
 
 The build is easily done by issuing
 
+    autoreconf --install
+    ./configure
     make
+    make check
+    sudo make install
