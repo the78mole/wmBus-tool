@@ -502,6 +502,10 @@ bool IMST_WriteAESKey(int serial, uint8_t slot, uint8_t *device, uint8_t *key) {
 
 bool IMST_ReadFrameFromStick(int serial, uint8_t *pBuffer,int sSize, uint16_t infoflag)
 {
+    if(sSize < 0) {
+        printf("%s %d : Read less than 0 bytes??? Stop!", __FILE__, __LINE__);
+        return false;
+    }
     unsigned long dwI,bytes_read=0;
     uint8_t DataBytes[MAX_HCI_LENGTH];
     uint8_t Length=0;
@@ -597,11 +601,11 @@ int wMBus_OpenDevice(char * device, uint16_t stick) {
 int wMBus_CloseDevice(int handle, uint16_t stick) {
 
     if((stick == iM871AIdentifier) || IsAmberStick(stick)) {
-        Stick_CloseDevice((int)handle);
         StickCom = -1; //get thread to terminate
-        usleep(2*SLEEP100MS);
         pthread_join(ThreadID, NULL);
         pthread_mutex_destroy(&lockAPI);
+        usleep(2*SLEEP100MS);
+        Stick_CloseDevice((int)handle);
         return 1;
     }
     return 0;
