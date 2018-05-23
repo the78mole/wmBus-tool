@@ -1,7 +1,8 @@
 wmBus-tool
 ==========
 
-This repo is a fork of the ffcrg/ecpiww repo and widens the usage of the wmBus library.
+This repo is based on the wmbus source of the [ffcrg/ecpiww repo](https://github.com/ffcrg/ecpiww), splits it up to
+a library and an application part and widens its usage.
 
 
 [![GitHub issues](https://img.shields.io/github/issues/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool/issues)
