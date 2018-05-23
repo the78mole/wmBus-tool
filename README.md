@@ -45,4 +45,5 @@ The build is easily done by issuing
     ./configure
     make
     make check           # If you want to be sure
+    make doc             # If you want to have docs (html and latex)
     sudo make install
