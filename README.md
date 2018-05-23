@@ -36,6 +36,11 @@ Features:
    - throw out AMBER
    - Make stubs for AMBER (find somebody to test it)
 
+## Long term ToDos
+
+ - Use a plugin infrastructure to provide drivers for different wMBus interfaces
+   See [Eli Bendersky's post](https://eli.thegreenplace.net/2012/08/24/plugins-in-c) as a starting point.
+
 # Building the software
 
 The build is easily done by issuing
