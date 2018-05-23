@@ -19,3 +19,14 @@ configure
 wmbus-tool
 config.status
 missing
+.libs
+*.la
+ltmain.sh
+*.lo
+Doxyfile
+*.trs
+ar-lib
+config.guess
+config.sub
+libtool
+doc/

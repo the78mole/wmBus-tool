@@ -39,8 +39,10 @@ Features:
 
 The build is easily done by issuing
 
+    libtoolize
+    aclocal
     autoreconf --install
     ./configure
     make
-    make check
+    make check           # If you want to be sure
     sudo make install

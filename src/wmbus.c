@@ -598,6 +598,7 @@ int wMBus_OpenDevice(char * device, uint16_t stick) {
     }
     return 0;
 }
+
 int wMBus_CloseDevice(int handle, uint16_t stick) {
 
     if((stick == iM871AIdentifier) || IsAmberStick(stick)) {

@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
 
     // Initialize and open serial port
     hStick = wMBus_OpenDevice(comDeviceName, wMBUSStick);
-    printf("Opened device %s: %d\n", comDeviceName, hStick);
+    printf(__FILE__ ": Opened device %s: %d\n", comDeviceName, hStick);
 
     if(hStick <= 0) {
-        printf("Could not find iM871A device at %s. Exiting.\n", comDeviceName);
+        printf(__FILE__ ": Could not find iM871A device at %s. Exiting.\n", comDeviceName);
         wMBus_CloseDevice(hStick, wMBUSStick);
         exit(1);
     }
@@ -37,26 +37,31 @@ int main(int argc, char *argv[])
     if((APIOK == (retval = wMBus_GetStickId(hStick, wMBUSStick, &ReturnValue, InfoFlag))) && 
             (iM871AIdentifier == ReturnValue)) 
     {
-        printf("IMST iM871A Stick found\n");
+        printf(__FILE__ ": IMST iM871A Stick found\n");
     } else {
-        printf("Could not open device %s (%02x, %d).\n", comDeviceName, ReturnValue, APIOK);
+        printf(__FILE__ ": Could not open device %s (%02x, %d).\n", comDeviceName, ReturnValue, APIOK);
         wMBus_CloseDevice(hStick, wMBUSStick);
     }
-    printf("wMBus_getStickId returned %d\n", retval);
+    printf(__FILE__ ": wMBus_getStickId returned %d\n", retval);
 
     // Get Stick's Radio Mode
     if(APIOK == wMBus_GetRadioMode(hStick, wMBUSStick, &ReturnValue, InfoFlag)) {
         if(InfoFlag > SILENTMODE) {
-            printf("wM-BUS %s Mode\n", (ReturnValue == RADIOT2) ? "T2" : "S2");
+            printf(__FILE__ ": wM-BUS %s Mode\n", (ReturnValue == RADIOT2) ? "T2" : "S2");
         }
-        if (ReturnValue != Mode)
-           wMBus_SwitchMode(hStick, wMBUSStick, (uint8_t) Mode, InfoFlag);
+        if (ReturnValue != Mode) {
+            if(InfoFlag > SILENTMODE) {
+                printf(__FILE__ ": wM-BUS switching Mode to %s\n", (Mode == RADIOT2) ? "T2" : "S2");
+            }
+            wMBus_SwitchMode(hStick, wMBUSStick, (uint8_t) Mode, InfoFlag);
+        }
     } else {
         wMBus_CloseDevice(hStick, wMBUSStick);
-        ErrorAndExit("wM-Bus Stick not found\n");
+        ErrorAndExit(__FILE__ ": wM-Bus Stick not found\n");
     }
 
     // initialize wM-Bus Stick
+    printf(__FILE__ " %d: wMBus_InitDevice\n", __LINE__);
     wMBus_InitDevice(hStick, wMBUSStick, InfoFlag);
 
     /* UpdateMetersonStick(hStick, wMBUSStick, Meters, ecpiwwMeter, InfoFlag); */
@@ -78,9 +83,10 @@ int main(int argc, char *argv[])
     // Close serial port
 
     
+    printf(__FILE__ " %d: wMBus_CloseDevice\n", __LINE__);
     wMBus_CloseDevice(hStick, wMBUSStick);
 
-    printf("Goodbye.\n");
+    printf(__FILE__ ": Goodbye.\n");
     
     return 0;
 }
