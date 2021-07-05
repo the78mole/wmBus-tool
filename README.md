@@ -1,9 +1,12 @@
 wmBus-tool
 ==========
 
+
+Instead of this software, better use [wmbusmeters](https://github.com/the78mole/wmbusmeters) and publish the wmbus data to some MQTT broker...
+
+
 This repo is based on the wmbus source of the [ffcrg/ecpiww repo](https://github.com/ffcrg/ecpiww), splits it up to
 a library and an application part and widens its usage.
-
 
 [![GitHub issues](https://img.shields.io/github/issues/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool/issues)
 [![GitHub license](https://img.shields.io/github/license/the78mole/wmBus-tool.svg?style=flat-square)](https://github.com/the78mole/wmBus-tool)
